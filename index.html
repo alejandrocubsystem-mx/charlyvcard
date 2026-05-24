@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carlos Bravo - Senior Care Services</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --gold: #d4af37;
+            --black: #000000;
+            --dark-gray: #1a1a1a;
+            --light-gold: #f1c40f;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--black);
+            color: #ffffff;
+            font-family: 'Lato', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .presentation-card {
+            background-color: var(--black);
+            width: 100%;
+            max-width: 600px;
+            border: 2px solid var(--gold);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 60px rgba(212, 175, 55, 0.2);
+            animation: slideUp 0.8s ease-out;
+            padding-bottom: 40px;
+        }
+
+        .logo-section {
+            padding: 60px 20px 40px;
+            text-align: center;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            background: radial-gradient(circle at center, #111 0%, #000 70%);
+        }
+
+        .main-logo {
+            width: 250px;
+            height: auto;
+            margin-bottom: 25px;
+            filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.5));
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.2rem;
+            color: var(--gold);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            line-height: 1;
+        }
+
+        .main-subtitle {
+            font-size: 1.1rem;
+            letter-spacing: 7px;
+            text-transform: uppercase;
+            margin-top: 12px;
+            color: #ccc;
+        }
+
+        .save-contact-area { padding: 30px; text-align: center; }
+
+        .btn-save {
+            width: 100%;
+            max-width: 300px;
+            padding: 20px;
+            background-color: var(--gold);
+            color: black;
+            text-decoration: none;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 4px;
+            font-size: 1.2rem;
+            transition: 0.3s;
+            cursor: pointer;
+            border: none;
+            margin-bottom: 20px;
+        }
+
+        .btn-save:hover { background-color: var(--light-gold); box-shadow: 0 0 25px rgba(212, 175, 55, 0.5); transform: translateY(-2px); }
+
+        .quick-actions { display: flex; justify-content: center; gap: 25px; margin-top: 10px; }
+
+        .action-circle {
+            width: 65px; height: 65px; border: 1px solid var(--gold); border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            color: var(--gold); text-decoration: none; font-size: 1.6rem; transition: 0.3s;
+        }
+
+        .action-circle:hover { background-color: var(--gold); color: black; }
+
+        .services-header {
+            text-align: center; padding: 30px 20px 10px;
+            font-family: 'Playfair Display', serif;
+            color: var(--gold); text-transform: uppercase;
+            letter-spacing: 3px; font-size: 1.4rem;
+        }
+
+        .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 20px 30px; }
+
+        .service-item {
+            background-color: var(--dark-gray); padding: 30px 20px;
+            border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 4px;
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; text-align: center; transition: 0.3s;
+        }
+
+        .service-item:hover { border-color: var(--gold); background-color: rgba(212, 175, 55, 0.05); }
+
+        .service-item i { color: var(--gold); font-size: 2rem; margin-bottom: 15px; }
+
+        .service-item span { font-size: 1rem; text-transform: uppercase; letter-spacing: 2px; color: #fff; }
+
+        .full-width { grid-column: span 2; }
+
+        .footer-quote {
+            padding: 50px 30px 20px; text-align: center; font-style: italic;
+            font-weight: 300; color: #aaa; font-size: 1rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.1); margin-top: 30px;
+        }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 500px) {
+            .main-title { font-size: 2.2rem; } .main-logo { width: 200px; }
+            .services-grid { grid-template-columns: 1fr; gap: 15px; }
+            .full-width { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="presentation-card">
+        <div class="logo-section">
+            <img src="logo.png" alt="Logo" class="main-logo">
+            <h1 class="main-title">CARLOS BRAVO</h1>
+            <p class="main-subtitle">Senior Care Services</p>
+        </div>
+
+        <div class="save-contact-area">
+            <button onclick="downloadVCard()" class="btn-save">
+                <i class="fa-solid fa-user-plus" style="margin-right: 15px;"></i> SAVE CONTACT
+            </button>
+            <div class="quick-actions">
+                <a href="tel:+19492598937" class="action-circle"><i class="fa-solid fa-phone"></i></a>
+                <a href="mailto:Cbravoflores@icloud.com" class="action-circle"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://wa.me/19492598937" class="action-circle"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+        </div>
+
+        <div class="services-header">Our Specialized Services</div>
+        <div class="services-grid">
+            <div class="service-item">
+                <i class="fa-solid fa-house-chimney"></i>
+                <span>Home Visits</span>
+            </div>
+            <div class="service-item">
+                <i class="fa-solid fa-utensils"></i>
+                <span>Meal Prep</span>
+            </div>
+            <div class="service-item">
+                <i class="fa-solid fa-heart-pulse"></i>
+                <span>Personal Care</span>
+            </div>
+            <div class="service-item">
+                <i class="fa-solid fa-pills"></i>
+                <span>Medication Assist</span>
+            </div>
+            <div class="service-item full-width">
+                <i class="fa-solid fa-comments"></i>
+                <span>Meaningful Companionship</span>
+            </div>
+        </div>
+
+        <div class="footer-quote">
+            "Compassionate care tailored to your loved ones' needs."
+        </div>
+    </div>
+
+    <script>
+        function downloadVCard() {
+            const vcardContent = 
+                "BEGIN:VCARD\n" +
+                "VERSION:3.0\n" +
+                "FN:Carlos Bravo\n" +
+                "ORG:Carlos Bravo Senior Care Services\n" +
+                "TITLE:Senior Care Professional\n" +
+                "TEL;TYPE=CELL:(949) 259 8937\n" +
+                "EMAIL:Cbravoflores@icloud.com\n" +
+                "NOTE:Home Visits, Meal Prep, Personal Care, Medication Assistance, Companionship.\n" +
+                "END:VCARD";
+            
+            const blob = new Blob([vcardContent], { type: "text/vcard" });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'Carlos_Bravo_Contact.vcf');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
