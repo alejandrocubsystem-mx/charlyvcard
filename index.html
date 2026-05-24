@@ -96,6 +96,7 @@
             width: 65px; height: 65px; border: 1px solid var(--gold); border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
             color: var(--gold); text-decoration: none; font-size: 1.6rem;
+            transition: 0.3s;
         }
 
         .action-circle:hover { background-color: var(--gold); color: black; }
@@ -139,7 +140,7 @@
             <div class="quick-actions">
                 <a href="tel:+19492598937" class="action-circle"><i class="fa-solid fa-phone"></i></a>
                 <a href="mailto:Cbravoflores@icloud.com" class="action-circle"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://wa.me/19492598937" class="action-circle"><i class="fa-brands fa-whatsapp"></i></a>
+                <a href="sms:+19492598937" class="action-circle"><i class="fa-solid fa-comment-dots"></i></a>
             </div>
         </div>
 
@@ -166,12 +167,16 @@
 
     <script>
         function downloadVCard() {
+            // PEGA AQUÍ TU CÓDIGO BASE64 DEL LOGO
+            const base64Logo = "AQUI_VA_TU_CODIGO_BASE64"; 
+            
             const vcardContent = 
                 "BEGIN:VCARD\n" +
                 "VERSION:3.0\n" +
                 "FN:Carlos Bravo\n" +
                 "ORG:Carlos Bravo Senior Care Services\n" +
                 "TITLE:Senior Care Professional\n" +
+                "PHOTO;ENCODING=b;TYPE=PNG:" + base64Logo + "\n" +
                 "TEL;TYPE=CELL:(949) 259 8937\n" +
                 "EMAIL:Cbravoflores@icloud.com\n" +
                 "NOTE:Home Visits, Meal Prep, Personal Care & Medication Assistance.\n" +
