@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carlos Bravo - Senior Care Services</title>
+    <title>Senior Care Services</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
@@ -41,29 +41,22 @@
         }
 
         .logo-section {
-            padding: 60px 20px 40px;
+            padding: 80px 20px 40px; /* Aumentado el padding superior */
             text-align: center;
             border-bottom: 1px solid rgba(212, 175, 55, 0.2);
         }
 
         .main-logo {
-            width: 250px;
+            width: 400px; /* Aumentado de 250px a 400px */
+            max-width: 90%; /* Asegura que no se desborde en móviles */
             height: auto;
             margin-bottom: 25px;
-            filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.5));
-        }
-
-        .main-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 3.2rem;
-            color: var(--gold);
-            letter-spacing: 4px;
-            text-transform: uppercase;
+            filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.6)); /* Sombra más pronunciada */
         }
 
         .main-subtitle {
-            font-size: 1.1rem;
-            letter-spacing: 7px;
+            font-size: 1.2rem; /* Ligeramente más grande */
+            letter-spacing: 8px; /* Más espaciado */
             text-transform: uppercase;
             margin-top: 12px;
             color: #ccc;
@@ -129,7 +122,6 @@
     <div class="presentation-card">
         <div class="logo-section">
             <img src="logo.png" alt="Logo" class="main-logo">
-            <h1 class="main-title">CARLOS BRAVO</h1>
             <p class="main-subtitle">Senior Care Services</p>
         </div>
 
@@ -173,9 +165,9 @@
             const vcardContent = 
                 "BEGIN:VCARD\n" +
                 "VERSION:3.0\n" +
-                "FN:Carlos Bravo\n" +
-                "ORG:Carlos Bravo Senior Care Services\n" +
-                "TITLE:Senior Care Professional\n" +
+                "FN:Senior Care Services\n" + /* Actualizado FN */
+                "ORG:Senior Care Services\n" + /* Actualizado ORG */
+                "TITLE:Professional Care\n" +
                 "PHOTO;ENCODING=b;TYPE=PNG:" + base64Logo + "\n" +
                 "TEL;TYPE=CELL:(949) 259 8937\n" +
                 "EMAIL:Cbravoflores@icloud.com\n" +
@@ -186,7 +178,7 @@
             const url = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', 'Carlos_Bravo_Contact.vcf');
+            link.setAttribute('download', 'Senior_Care_Contact.vcf'); /* Actualizado nombre de archivo */
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
