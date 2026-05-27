@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"> <!-- CRUCIAL PARA CARACTERES ESPECIALES -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Carlos Bravo - Senior Care</title>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
@@ -45,11 +45,14 @@
             width: 100%; padding: 12px; background-color: var(--gold); color: black; 
             font-weight: 900; text-transform: uppercase; border-radius: 8px; border: none; 
             cursor: pointer; margin-bottom: 25px; font-size: 0.85rem;
+            transition: transform 0.2s;
         }
+        .btn-save:active { transform: scale(0.98); }
         .btn-save span { display: block; font-size: 0.7rem; font-weight: 400; opacity: 0.8; }
 
         .quick-actions { display: flex; justify-content: center; gap: 20px; margin-bottom: 25px; }
         .action-circle { width: 50px; height: 50px; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 1.2rem; text-decoration: none; transition: 0.3s; }
+        .action-circle:hover { background-color: var(--gold); color: black; }
 
         .services-grid { display: flex; flex-direction: column; gap: 10px; border-top: 1px solid #333; padding-top: 20px; }
         .service-item { background: var(--dark-gray); padding: 12px 15px; border-radius: 8px; font-size: 0.75rem; color: #fff; text-transform: uppercase; text-align: left; display: flex; align-items: center; gap: 12px; }
@@ -63,7 +66,8 @@
     <div class="main-wrapper">
         <div class="card">
             <div class="logo-section">
-                <img src="logo.png" alt="Logo" class="main-logo">
+                <!-- Asegúrate de tener una imagen llamada logo.png en la misma carpeta -->
+                <img src="logo.png" alt="Logo Carlos Bravo" class="main-logo">
                 <p class="main-subtitle">Senior Care Services</p>
             </div>
 
@@ -91,33 +95,89 @@
     <script>
         async function downloadVCard() {
             try {
-                // Fetch carga el contenido de logo.txt
+                // 1. Cargar el archivo logo.txt
                 const response = await fetch('logo.txt');
-                const base64Logo = await response.text();
+                if (!response.ok) throw new Error("No se pudo cargar logo.txt");
                 
+                let base64Logo = await response.text();
+                
+                // 2. Limpieza robusta: eliminar prefijos data URI, espacios, saltos de línea
+                base64Logo = base64Logo.replace(/^data:image\/(png|jpeg|jpg);base64,/, '')
+                                       .replace(/\s/g, '')
+                                       .trim();
+
+                if (!base64Logo) throw new Error("El archivo logo.txt está vacío o corrupto");
+
+                // 3. Detectar tipo de imagen por los primeros caracteres
+                // PNG empieza con iVBORw0KGgo
+                // JPEG empieza con /9j/
+                let imageType = 'JPEG'; // Default
+                if (base64Logo.startsWith('iVBORw0KGgo')) {
+                    imageType = 'PNG';
+                } else if (base64Logo.startsWith('/9j/')) {
+                    imageType = 'JPEG';
+                } else {
+                    console.warn("Formato de imagen no reconocido, asumiendo JPEG");
+                }
+
+                // 4. Construir vCard 3.0 con CHARSET=UTF-8 explícito
+                // Esto evita que el nombre aparezca con símbolos raros en iPhone
                 const vcardContent = [
                     "BEGIN:VCARD",
                     "VERSION:3.0",
-                    "FN:Carlos Bravo",
-                    "ORG:Senior Care Services",
-                    "TEL;TYPE=CELL:+19492598937",
-                    "EMAIL:cbravoflores@icloud.com",
-                    "NOTE:Personalized compassionate care for your loved ones.",
-                    "PHOTO;ENCODING=b;TYPE=JPEG:" + base64Logo.trim(),
+                    "PRODID:-//Carlos Bravo//NONSGML vCard//EN",
+                    "FN;CHARSET=UTF-8:Carlos Bravo",       // Nombre completo
+                    "N;CHARSET=UTF-8:Bravo;Carlos;;;",     // Apellido;Nombre;;;
+                    "ORG;CHARSET=UTF-8:Senior Care Services", // Organización
+                    "TEL;TYPE=CELL,VOICE;TYPE=PREF:+19492598937", // Teléfono
+                    "EMAIL;TYPE=WORK:cbravoflores@icloud.com", // Email
+                    "NOTE;CHARSET=UTF-8:Personalized compassionate care for your loved ones.", // Nota
+                    "PHOTO;ENCODING=b;TYPE=" + imageType + ":" + base64Logo, // Foto
                     "END:VCARD"
-                ].join("\n");
+                ].join("\r\n");
 
-                const blob = new Blob([vcardContent], { type: "text/vcard" });
-                const url = window.URL.createObjectURL(blob);
+                // 5. Crear Blob con codificación UTF-8 explícita usando TextEncoder
+                // Esto garantiza que iOS lea los caracteres correctamente
+                const encoder = new TextEncoder();
+                const uint8Array = encoder.encode(vcardContent);
+                const blob = new Blob([uint8Array], { type: "text/vcard;charset=utf-8" });
+                
+                // 6. Descargar el archivo
+                const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.setAttribute('download', 'Carlos_Bravo_Contact.vcf');
-                document.body.appendChild(link);
+                link.download = "Carlos_Bravo.vcf";
+                document.body.appendChild(link); // Necesario para Firefox
                 link.click();
                 document.body.removeChild(link);
-                window.URL.revokeObjectURL(url);
+                URL.revokeObjectURL(url);
+                
+                console.log("✅ Contacto generado correctamente con foto.");
+
             } catch (err) {
-                alert("Error al cargar el contacto. Asegúrate de tener el archivo logo.txt en la misma carpeta.");
+                console.error(" Error:", err);
+                alert("Hubo un error al generar el contacto. Verifica que 'logo.txt' contenga una imagen Base64 válida y limpia.");
+                
+                // Fallback: Generar vCard sin foto pero con nombre correcto
+                const vcardSimple = [
+                    "BEGIN:VCARD",
+                    "VERSION:3.0",
+                    "FN;CHARSET=UTF-8:Carlos Bravo",
+                    "N;CHARSET=UTF-8:Bravo;Carlos;;;",
+                    "ORG;CHARSET=UTF-8:Senior Care Services",
+                    "TEL;TYPE=CELL,VOICE;TYPE=PREF:+19492598937",
+                    "EMAIL;TYPE=WORK:cbravoflores@icloud.com",
+                    "END:VCARD"
+                ].join("\r\n");
+                
+                const encoder = new TextEncoder();
+                const blob = new Blob([encoder.encode(vcardSimple)], { type: "text/vcard;charset=utf-8" });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = "Carlos_Bravo_SinFoto.vcf";
+                link.click();
+                URL.revokeObjectURL(url);
             }
         }
     </script>
